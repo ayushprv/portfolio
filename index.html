@@ -21,31 +21,20 @@ body { background: #000; color: #fff; overflow-x: hidden; }
 #mouseGlow { position: fixed; width: 360px; height: 360px; border-radius: 50%; background: radial-gradient(circle, rgba(255,255,255,0.04) 0%, transparent 70%); pointer-events: none; transition: 0.25s ease-out; transform: translate(-50%, -50%); }
 
 /* Main Content */
-.container { text-align: center; max-width: 850px; margin: 0 auto; padding: 80px 20px; position: relative; z-index: 10; }
-@media (max-width: 768px) { .container { padding: 60px 15px; } }
+.container { text-align: center; max-width: 850px; margin: 0 auto; padding: 120px 20px; position: relative; z-index: 10; }
 
 /* Logo */
-.logo-wrapper { position: relative; display: inline-block; margin-bottom: 40px; }
+.logo-wrapper { position: relative; display: inline-block; margin-bottom: 50px; }
 .logo-ring1, .logo-ring2 { position: absolute; border-radius: 50%; border: 1px solid rgba(255,255,255,0.2); transition: 0.5s; }
 .logo-ring1 { top: -12px; left: -12px; right: -12px; bottom: -12px; }
 .logo-ring2 { top: -25px; left: -25px; right: -25px; bottom: -25px; opacity: 0.3; }
 .logo-circle { width: 150px; height: 150px; border-radius: 50%; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.25); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; font-size: 52px; font-weight: 200; letter-spacing: 12px; transition: 0.3s; }
-@media (max-width: 768px) { 
-  .logo-wrapper { margin-bottom: 30px; }
-  .logo-circle { width: 100px; height: 100px; font-size: 36px; letter-spacing: 8px; }
-  .logo-ring1 { top: -8px; left: -8px; right: -8px; bottom: -8px; }
-  .logo-ring2 { top: -16px; left: -16px; right: -16px; bottom: -16px; }
-}
 
 /* Name */
 .name { font-size: 4rem; font-weight: 200; letter-spacing: 12px; margin-bottom: 25px; }
-@media (max-width: 768px) { .name { font-size: 2.2rem; letter-spacing: 6px; } }
-@media (max-width: 480px) { .name { font-size: 1.8rem; letter-spacing: 4px; } }
 
 /* Tagline */
 .tagline { color: #ccc; font-weight: 300; font-size: 1.2rem; max-width: 650px; margin: 0 auto 50px auto; line-height: 1.7; }
-@media (max-width: 768px) { .tagline { font-size: 1rem; margin-bottom: 35px; } }
-@media (max-width: 480px) { .tagline { font-size: 0.95rem; } }
 
 /* Buttons */
 .btn-row { display: flex; justify-content: center; gap: 20px; margin-bottom: 60px; flex-wrap: wrap; }
@@ -65,7 +54,6 @@ body { background: #000; color: #fff; overflow-x: hidden; }
 
 /* Footer */
 .footer { color: #777; font-size: 0.8rem; letter-spacing: 2px; }
-
 /* Highlight Effects */
 .highlight-main {
   background: linear-gradient(120deg, rgba(255,255,255,0.12), rgba(255,255,255,0.22));
@@ -121,6 +109,8 @@ body { background: #000; color: #fff; overflow-x: hidden; }
     <a href="https://github.com/ayushprv/" class="social"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/github.svg" width="20"></a>
     <a href="https://medium.com/@ayushyadavprv" class="social"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/medium.svg" width="20"></a>
   </div>
+
+  
 
   <div class="footer">© 2026 AYUSH YADAV</div>
 </div>
