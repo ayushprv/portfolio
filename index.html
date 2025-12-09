@@ -9,42 +9,68 @@
 <style>
 body{
   font-family: "Poppins",sans-serif;
+  margin: 0;
+  padding: 0;
 }
+
 .top-heading{
   text-align: center;
   font-weight: 700;
-
-
-  
 }
+
 .nav-links{
     text-align: center;
     margin-bottom: 3%;
 }
+
 .nav{
-    align-content: center;
-    margin-left: 5%;
-    margin-right: 5%;
+    margin: 0 10px;
     text-decoration: none;
 }
+
 .frame{
     display: flex;
     align-items: flex-start;
     gap: 20px;
+    padding: 0 5%;
 }
+
 .photoframe{
     width: auto;
     height: 400px;
     border-radius: 3%;
 }
+
 .textbox{
     margin: 0%;
 }
+
+/* 📱 RESPONSIVE FIX */
+@media(max-width: 768px){
+    .frame{
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .photoframe{
+        height: auto;
+        width: 90%;
+        max-width: 350px;
+    }
+
+    .textbox{
+        padding: 0 20px;
+    }
+}
+
 </style>
 </head>
 <body>
+
 <h1 class="top-heading">ayushyadav.me</h1>
-<hr></hr>
+<hr>
+
 <div class="nav-links">
     <a href="https://medium.com/@ayushyadavprv" class="nav">Blogs</a>
     <a href="https://www.linkedin.com/in/ayushhyadav/" class="nav">Linkedin</a>
@@ -52,12 +78,18 @@ body{
     <a href="https://instagram.com/ayushydv268" class="nav">Instagram</a>
     <a href="mailto:ayushyadavprv" class="nav">Mail</a>
 </div>
+
 <div class="frame">
     <img class="photoframe" src="https://i.pinimg.com/736x/33/8d/a9/338da9f7d55dd4a21104240ca0a9747a.jpg">
     <div class="textbox">
         <h2>Hello Internet,</h2>
-        <p>As the domain and {h1} of the site clearly show my name, why add it here to make it boring? Here is my profile. I am currently pursuing a bachelor's in Computer Science and exploring opportunities in entrepreneurship and startup culture. I used my design and team-management skills to build Mentally Prepare(it's a platform for students preparing for competitive exams in INDIA)</p>
+        <p>
+            As the domain and {h1} of the site clearly show my name, why add it here to make it boring?
+            Here is my profile. I am currently pursuing a bachelor's in Computer Science and exploring opportunities in entrepreneurship and startup culture.
+            I used my design and team-management skills to build Mentally Prepare (it's a platform for students preparing for competitive exams in INDIA)
+        </p>
     </div>
 </div>
+
 </body>
 </html>
