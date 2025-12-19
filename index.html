@@ -44,10 +44,20 @@ body{
 .textbox{
     margin: 0%;
 }
+
 .blogframe{
-    width: 1280px;
+    width: 250px;
     height: auto;
     border-radius: 3%;
+}
+.featured-wrapper{
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+}
+
+.featured-text{
+    flex: 1;
 }
 @media(max-width: 768px){
     .frame{
@@ -91,12 +101,15 @@ body{
             here is my profile. i am currently pursuing a bachelor's in computer science and exploring opportunities in entrepreneurship.
             i used my design and team-management skills to build mentally prepare (it's a platform for students preparing for competitive exams in india)
         </p>
+        <h3>featured writings..</h3>
+        <div class="featured-wrapper">
+            <img class="blogframe" src="https://i.pinimg.com/736x/ee/0b/8e/ee0b8e780330a1aa9252f005cbb39a56.jpg">
+            <p class="featured-text">
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugiat officia culpa distinctio neque rerum velit! Quia, odio. Excepturi nam pariatur quisquam porro necessitatibus, aut vitae labore, ut quibusdam enim amet. <br> coming soon
+            </p>
+        </div>
+
     </div>
 </div>
-<div>
-  <h3>featured writings</h3>
-  <img class="blogframe" src="https://i.pinimg.com/736x/e5/6b/b6/e56bb6ead74121dd09b8f0887ca9e610.jpg">
-</div>
-
 </body>
 </html>
