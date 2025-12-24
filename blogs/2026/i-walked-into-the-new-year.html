@@ -2,10 +2,10 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>i walked into the new year</title>
+<title>i walked into the year</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-<link rel="icon" type="image/png" href="https://i.pinimg.com/736x/b4/be/20/b4be20054573a7917b2e3b7239bfce20.jpg">
+
 <style>
 body{
   font-family: "Poppins",sans-serif;
@@ -49,16 +49,127 @@ hr{
     margin: 40px auto;
     background: linear-gradient(to right, transparent, #ccc, transparent);
   }
+.writings{
+  margin-left: 20px;
+}
+.banner{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  flex-wrap: wrap;
+}
+
+.banner a{
+  position: relative;
+  overflow: hidden;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  transition: all 0.4s ease;
+}
+
+.banner a:hover{
+  transform: translateY(-8px);
+  box-shadow: 0 12px 35px rgba(0,0,0,0.2);
+}
+
+.banner img{
+  width: 360px;
+  height: auto;
+  aspect-ratio: 16/9;
+  object-fit: cover;
+  border-radius: 12px;
+  transition: all 0.4s ease;
+  display: block;
+}
+
+.banner a:hover img{
+  transform: scale(1.1);
+}
+
+/* Responsive Design */
+@media (max-width: 1100px) {
+  .banner img{
+    width: 300px;
+  }
+}
+
+@media (max-width: 768px) {
+  .banner{
+    gap: 15px;
+  }
+  .banner img{
+    width: 260px;
+  }
+}
+
+@media (max-width: 600px) {
+  .banner{
+    flex-direction: column;
+    gap: 20px;
+  }
+  .banner img{
+    width: 85vw;
+    max-width: 450px;
+  }
+  
+  /* Scroll animation for mobile */
+  .banner a{
+    opacity: 0;
+    transform: translateY(30px);
+    animation: slideUp 0.6s ease forwards;
+  }
+  
+  .banner a:nth-child(1){
+    animation-delay: 0.1s;
+  }
+  
+  .banner a:nth-child(2){
+    animation-delay: 0.3s;
+  }
+  
+  .banner a:nth-child(3){
+    animation-delay: 0.5s;
+  }
+  
+  @keyframes slideUp {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}
 </style>
 </head>
 <body>
 <h1 class="top-heading">i walked into the new year</h1>
 <div class="tags">
-  <span>#walking</span>
+  <span>#trek</span>
   <span>#selfimprovement</span>
   <span>#newyear2026</span>
   <span>#mindset</span>
 </div>
 <hr>
+<div class="writings">
+  <div class="banner">
+    <a href="https://u.cubeupload.com/ayushyadavprv/IMG20251223065036298.jpg" target="_blank">
+      <img src="https://u.cubeupload.com/ayushyadavprv/IMG20251223065036298.jpg">
+    </a>
+    <a href="https://u.cubeupload.com/ayushyadavprv/IMG20251223132546817.jpg" target="_blank">
+      <img src="https://u.cubeupload.com/ayushyadavprv/IMG20251223132546817.jpg">
+    </a>
+    <a href="https://u.cubeupload.com/ayushyadavprv/IMG20251223113952112.jpg" target="_blank">
+      <img src="https://u.cubeupload.com/ayushyadavprv/IMG20251223113952112.jpg">
+    </a>
+</div>
+  <h2>five am: five hour nap </h2>
+  <p> 
+    as we know(chabis me to duniya khatam hain) hehe2, so i decided to make 2025 remarkable and open gates for a new year.
+
+  </p>
+</div>
 </body>
 </html>
