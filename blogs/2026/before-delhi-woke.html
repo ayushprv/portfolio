@@ -7,191 +7,438 @@
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 
 <style>
-body{
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
   font-family: "Poppins", sans-serif;
-  margin: 0;
-  padding: 0;
   background: #ffffff;
 }
 
-.top-heading{
+header {
   text-align: center;
+  padding: 44px 20px 20px;
+}
+
+header h1 {
   font-weight: 700;
-  margin-top: 40px;
+  font-size: clamp(1.6rem, 4vw, 2.2rem);
   text-transform: lowercase;
+  color: #111;
 }
 
-.tags{
-  text-align: center;
-  margin-top: 10px;
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 14px;
 }
 
-.tags span{
-  display:inline-block;
-  background:#f2f2f2;
-  padding:6px 14px;
-  margin:4px;
-  border-radius:20px;
-  font-size:13px;
-  transition: 0.3s ease;
+.tags span {
+  background: #f2f2f2;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: background 0.2s;
 }
 
-.tags span:hover{
-  background:#e0e0e0;
-  cursor:pointer;
-}
+.tags span:hover { background: #e0e0e0; }
 
-hr{
+.divider {
   border: none;
   height: 1px;
   width: 70%;
-  margin: 40px auto;
+  margin: 36px auto;
   background: linear-gradient(to right, transparent, #ccc, transparent);
 }
 
-.banner{
+.masonry {
   column-count: 4;
-  column-gap: 12px;
-  max-width: 1200px;
-  margin: 0 auto 60px auto;
-  padding: 0 12px;
+  column-gap: 10px;
+  max-width: 1280px;
+  margin: 0 auto 80px;
+  padding: 0 10px;
 }
 
-.banner a{
-  display: inline-block;
+.masonry a {
+  display: block;
   width: 100%;
-  margin-bottom: 12px;
   break-inside: avoid;
-  position: relative;
+  margin-bottom: 10px;
   border-radius: 12px;
   overflow: hidden;
+  cursor: zoom-in;
 }
 
-.banner img{
+.masonry a img {
   width: 100%;
   height: auto;
   display: block;
   border-radius: 12px;
   transition: transform 0.4s ease, box-shadow 0.4s ease;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+  box-shadow: 0 3px 14px rgba(0,0,0,0.09);
 }
 
-.banner a:hover img{
+.masonry a:hover img {
   transform: scale(1.05);
-  box-shadow: 0 12px 30px rgba(0,0,0,0.18);
+  box-shadow: 0 12px 32px rgba(0,0,0,0.2);
+}
+
+.masonry a.landscape img {
+  min-height: 220px;
+  object-fit: cover;
 }
 
 @media (max-width: 1100px) {
-  .banner{
-    column-count: 3;
-  }
+  .masonry { column-count: 3; }
 }
 
-@media (max-width: 768px) {
-  .banner{
-    column-count: 2;
-    column-gap: 10px;
-    padding: 0 10px;
-  }
-  .banner a{
-    margin-bottom: 10px;
-  }
+@media (max-width: 720px) {
+  .masonry { column-count: 2; column-gap: 8px; padding: 0 8px; }
+  .masonry a { margin-bottom: 8px; }
+  .masonry a.landscape img { min-height: 140px; }
 }
+
+.lightbox {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.88);
+  z-index: 999;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.lightbox.open { display: flex; }
+
+.lightbox img {
+  max-width: 92vw;
+  max-height: 92vh;
+  border-radius: 10px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+}
+
+.lightbox-close {
+  position: fixed;
+  top: 18px;
+  right: 24px;
+  color: #fff;
+  font-size: 32px;
+  cursor: pointer;
+  line-height: 1;
+  opacity: 0.8;
+  transition: opacity 0.2s;
+}
+
+.lightbox-close:hover { opacity: 1; }
+
+.popup-overlay {
+  display: flex;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.45);
+  z-index: 1000;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  animation: fadeIn 0.3s ease;
+}
+
+.popup-overlay.hidden { display: none; }
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.popup {
+  background: #fff;
+  border-radius: 20px;
+  width: 100%;
+  max-width: 420px;
+  padding: 36px 32px 32px;
+  position: relative;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+  animation: slideUp 0.35s cubic-bezier(0.22,1,0.36,1);
+}
+
+@keyframes slideUp {
+  from { transform: translateY(30px); opacity: 0; }
+  to   { transform: translateY(0);    opacity: 1; }
+}
+
+.popup-close {
+  position: absolute;
+  top: 14px;
+  right: 18px;
+  font-size: 22px;
+  color: #aaa;
+  cursor: pointer;
+  line-height: 1;
+  transition: color 0.2s;
+  background: none;
+  border: none;
+  font-family: inherit;
+}
+
+.popup-close:hover { color: #111; }
+
+.popup-logo {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: #f2f2f2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 20px;
+  overflow: hidden;
+  border: 2px solid #eee;
+}
+
+.popup-logo img {
+  width: 38px;
+  height: 38px;
+  object-fit: contain;
+}
+
+.popup h2 {
+  text-align: center;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #111;
+  text-transform: lowercase;
+  margin-bottom: 8px;
+}
+
+.popup p {
+  text-align: center;
+  font-size: 13px;
+  color: #777;
+  line-height: 1.6;
+  margin-bottom: 22px;
+}
+
+.popup-input-row {
+  display: flex;
+  gap: 8px;
+}
+
+.popup-input-row input {
+  flex: 1;
+  padding: 11px 14px;
+  border: 1.5px solid #e0e0e0;
+  border-radius: 10px;
+  font-family: "Poppins", sans-serif;
+  font-size: 13px;
+  outline: none;
+  transition: border-color 0.2s;
+  color: #111;
+}
+
+.popup-input-row input:focus { border-color: #111; }
+
+.popup-input-row button {
+  padding: 11px 18px;
+  background: #111;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  font-family: "Poppins", sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.15s;
+  white-space: nowrap;
+}
+
+.popup-input-row button:hover { background: #333; transform: scale(1.03); }
+.popup-input-row button:disabled { background: #aaa; cursor: not-allowed; transform: none; }
+
+.popup-msg {
+  text-align: center;
+  font-size: 13px;
+  margin-top: 14px;
+  min-height: 18px;
+  color: #2e7d32;
+}
+
+.popup-msg.error { color: #c62828; }
+
+.popup-skip {
+  text-align: center;
+  margin-top: 14px;
+  font-size: 12px;
+  color: #bbb;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.popup-skip:hover { color: #888; }
 </style>
 </head>
+
 <body>
-<h1 class="top-heading">before delhi woke</h1>
-<div class="tags">
-  <span>#lalqila</span>
-  <span>#delhidiaries</span>
-  <span>#heritage</span>
-  <span>#archaeologicalsite</span>
+
+<header>
+  <h1>before delhi woke</h1>
+  <div class="tags">
+    <span>#lalqila</span>
+    <span>#delhidiaries</span>
+    <span>#heritage</span>
+    <span>#archaeologicalsite</span>
+  </div>
+</header>
+
+<hr class="divider">
+
+<div class="masonry" id="feed">
+
+  <a href="#" data-src="https://u.cubeupload.com/ayushyadavprv/1.jpg">
+    <img src="https://u.cubeupload.com/ayushyadavprv/1.jpg" loading="lazy" alt="">
+  </a>
+
+  <a href="#" data-src="https://u.cubeupload.com/ayushyadavprv/2.jpg">
+    <img src="https://u.cubeupload.com/ayushyadavprv/2.jpg" loading="lazy" alt="">
+  </a>
+
+  <a href="#" data-src="https://u.cubeupload.com/ayushyadavprv/3.jpg">
+    <img src="https://u.cubeupload.com/ayushyadavprv/3.jpg" loading="lazy" alt="">
+  </a>
+
+  <a href="#" data-src="https://u.cubeupload.com/ayushyadavprv/IMG20260226092223.jpg">
+    <img src="https://u.cubeupload.com/ayushyadavprv/IMG20260226092223.jpg" loading="lazy" alt="">
+  </a>
+
+  <a href="#" data-src="https://u.cubeupload.com/ayushyadavprv/5.jpg">
+    <img src="https://u.cubeupload.com/ayushyadavprv/5.jpg" loading="lazy" alt="">
+  </a>
+
+  <a href="#" data-src="https://u.cubeupload.com/ayushyadavprv/6.jpg">
+    <img src="https://u.cubeupload.com/ayushyadavprv/6.jpg" loading="lazy" alt="">
+  </a>
+
+  <a href="#" data-src="https://u.cubeupload.com/ayushyadavprv/7.jpg">
+    <img src="https://u.cubeupload.com/ayushyadavprv/7.jpg" loading="lazy" alt="">
+  </a>
+
+  <a href="#" data-src="https://u.cubeupload.com/ayushyadavprv/8.jpg">
+    <img src="https://u.cubeupload.com/ayushyadavprv/8.jpg" loading="lazy" alt="">
+  </a>
+
+  <a href="#" data-src="https://u.cubeupload.com/ayushyadavprv/9.jpg">
+    <img src="https://u.cubeupload.com/ayushyadavprv/9.jpg" loading="lazy" alt="">
+  </a>
+
+  <a href="#" data-src="https://u.cubeupload.com/ayushyadavprv/IMG20260226092541.jpg">
+    <img src="https://u.cubeupload.com/ayushyadavprv/IMG20260226092541.jpg" loading="lazy" alt="">
+  </a>
+
+  <a href="#" data-src="https://u.cubeupload.com/ayushyadavprv/4.jpg">
+    <img src="https://u.cubeupload.com/ayushyadavprv/4.jpg" loading="lazy" alt="">
+  </a>
+
+  <a href="#" data-src="https://u.cubeupload.com/ayushyadavprv/IMG20260226092021.jpg">
+    <img src="https://u.cubeupload.com/ayushyadavprv/IMG20260226092021.jpg" loading="lazy" alt="">
+  </a>
+
+  <a href="#" data-src="https://u.cubeupload.com/ayushyadavprv/IMG20260226091954.jpg">
+    <img src="https://u.cubeupload.com/ayushyadavprv/IMG20260226091954.jpg" loading="lazy" alt="">
+  </a>
+
 </div>
-<hr>
-<div class="writings">
-  <div class="banner">
 
-    <a href="https://u.cubeupload.com/ayushyadavprv/1.jpg" target="_blank">
-      <img src="https://u.cubeupload.com/ayushyadavprv/1.jpg" loading="lazy">
-    </a>
-
-    <a href="https://u.cubeupload.com/ayushyadavprv/2.jpg" target="_blank">
-      <img src="https://u.cubeupload.com/ayushyadavprv/2.jpg" loading="lazy">
-    </a>
-
-    <a href="https://u.cubeupload.com/ayushyadavprv/3.jpg" target="_blank">
-      <img src="https://u.cubeupload.com/ayushyadavprv/3.jpg" loading="lazy">
-    </a>
-
-    <a href="https://u.cubeupload.com/ayushyadavprv/4.jpg" target="_blank">
-      <img src="https://u.cubeupload.com/ayushyadavprv/4.jpg" loading="lazy">
-    </a>
-
-    <a href="https://u.cubeupload.com/ayushyadavprv/5.jpg" target="_blank">
-      <img src="https://u.cubeupload.com/ayushyadavprv/5.jpg" loading="lazy">
-    </a>
-
-    <a href="https://u.cubeupload.com/ayushyadavprv/6.jpg" target="_blank">
-      <img src="https://u.cubeupload.com/ayushyadavprv/6.jpg" loading="lazy">
-    </a>
-
-    <a href="https://u.cubeupload.com/ayushyadavprv/7.jpg" target="_blank">
-      <img src="https://u.cubeupload.com/ayushyadavprv/7.jpg" loading="lazy">
-    </a>
-
-    <a href="https://u.cubeupload.com/ayushyadavprv/8.jpg" target="_blank">
-      <img src="https://u.cubeupload.com/ayushyadavprv/8.jpg" loading="lazy">
-    </a>
-
-    <a href="https://u.cubeupload.com/ayushyadavprv/9.jpg" target="_blank">
-      <img src="https://u.cubeupload.com/ayushyadavprv/9.jpg" loading="lazy">
-    </a>
-
-    <a href="https://u.cubeupload.com/ayushyadavprv/IMG20260226092541.jpg" target="_blank">
-      <img src="https://u.cubeupload.com/ayushyadavprv/IMG20260226092541.jpg" loading="lazy">
-    </a>
-
-    <a href="https://u.cubeupload.com/ayushyadavprv/IMG20260226092223.jpg" target="_blank">
-      <img src="https://u.cubeupload.com/ayushyadavprv/IMG20260226092223.jpg" loading="lazy">
-    </a>
-
-    <a href="https://u.cubeupload.com/ayushyadavprv/IMG20260226092021.jpg" target="_blank">
-      <img src="https://u.cubeupload.com/ayushyadavprv/IMG20260226092021.jpg" loading="lazy">
-    </a>
-
-    <a href="https://u.cubeupload.com/ayushyadavprv/IMG20260226091954.jpg" target="_blank">
-      <img src="https://u.cubeupload.com/ayushyadavprv/IMG20260226091954.jpg" loading="lazy">
-    </a>
-
-    <a href="https://u.cubeupload.com/ayushyadavprv/IMG20260226091815.jpg" target="_blank">
-      <img src="https://u.cubeupload.com/ayushyadavprv/IMG20260226091815.jpg" loading="lazy">
-    </a>
-
-    <a href="https://u.cubeupload.com/ayushyadavprv/IMG20260226091751.jpg" target="_blank">
-      <img src="https://u.cubeupload.com/ayushyadavprv/IMG20260226091751.jpg" loading="lazy">
-    </a>
-
-    <a href="https://u.cubeupload.com/ayushyadavprv/IMG20260226091146.jpg" target="_blank">
-      <img src="https://u.cubeupload.com/ayushyadavprv/IMG20260226091146.jpg" loading="lazy">
-    </a>
-
-    <a href="https://u.cubeupload.com/ayushyadavprv/IMG20260226090314.jpg" target="_blank">
-      <img src="https://u.cubeupload.com/ayushyadavprv/IMG20260226090314.jpg" loading="lazy">
-    </a>
-
-    <a href="https://u.cubeupload.com/ayushyadavprv/IMG20260226084521.jpg" target="_blank">
-      <img src="https://u.cubeupload.com/ayushyadavprv/IMG20260226084521.jpg" loading="lazy">
-    </a>
-
-    <a href="https://u.cubeupload.com/ayushyadavprv/IMG20260226084459.jpg" target="_blank">
-      <img src="https://u.cubeupload.com/ayushyadavprv/IMG20260226084459.jpg" loading="lazy">
-    </a>
-
-    <a href="https://u.cubeupload.com/ayushyadavprv/IMG20260226084307.jpg" target="_blank">
-      <img src="https://u.cubeupload.com/ayushyadavprv/IMG20260226084307.jpg" loading="lazy">
-    </a>
-
+<div class="popup-overlay" id="popupOverlay">
+  <div class="popup">
+    <button class="popup-close" id="popupClose">&times;</button>
+    <div class="popup-logo">
+      <img src="https://i.pinimg.com/736x/b4/be/20/b4be20054573a7917b2e3b7239bfce20.jpg" id="faviconImg" alt="logo">
+    </div>
+    <h2>stay in the loop</h2>
+    <p>get notified when a new blog drops —<br>no spam, just stories.</p>
+    <div class="popup-input-row">
+      <input type="email" id="emailInput" placeholder="your@email.com">
+      <button id="subscribeBtn">notify me</button>
+    </div>
+    <div class="popup-msg" id="popupMsg"></div>
   </div>
 </div>
+
+<div class="lightbox" id="lightbox">
+  <span class="lightbox-close" id="lbClose">&times;</span>
+  <img src="" id="lbImg" alt="">
+</div>
+
+<script>
+  const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw2NDnef4E8goJ2facXZvj_logYhQiJUzZXCTFBeFSJPFwNEj6l6duMjepN9M4MBGjJDA/exec';
+
+  const overlay      = document.getElementById('popupOverlay');
+  const popupClose   = document.getElementById('popupClose');
+  const popupSkip    = document.getElementById('popupSkip');
+  const subscribeBtn = document.getElementById('subscribeBtn');
+  const emailInput   = document.getElementById('emailInput');
+  const popupMsg     = document.getElementById('popupMsg');
+
+  function closePopup() { overlay.classList.add('hidden'); }
+  popupClose.addEventListener('click', closePopup);
+  if (popupSkip) popupSkip.addEventListener('click', closePopup);
+
+  subscribeBtn.addEventListener('click', () => {
+    const email = emailInput.value.trim();
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!re.test(email)) {
+      popupMsg.textContent = 'please enter a valid email.';
+      popupMsg.className = 'popup-msg error';
+      return;
+    }
+    fetch(APPS_SCRIPT_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email })
+    });
+    popupMsg.textContent = '✓ you\'re subscribed!';
+    popupMsg.className = 'popup-msg';
+    setTimeout(closePopup, 1200);
+  });
+
+  emailInput.addEventListener('keydown', e => { if (e.key === 'Enter') subscribeBtn.click(); });
+
+
+  const feed    = document.getElementById('feed');
+  const lightbox = document.getElementById('lightbox');
+  const lbImg = document.getElementById('lbImg');
+  const lbClose = document.getElementById('lbClose');
+
+  feed.querySelectorAll('img').forEach(img => {
+    const detect = () => {
+      const r = img.naturalWidth / img.naturalHeight;
+      if (r >= 1.15) {
+        img.closest('a').classList.add('landscape');
+      }
+    };
+    if (img.complete && img.naturalWidth) detect();
+    else img.addEventListener('load', detect);
+  });
+
+  feed.querySelectorAll('a').forEach(a => {
+    a.addEventListener('click', e => {
+      e.preventDefault();
+      lbImg.src = a.dataset.src;
+      lightbox.classList.add('open');
+    });
+  });
+
+  lbClose.addEventListener('click', () => lightbox.classList.remove('open'));
+  lightbox.addEventListener('click', e => {
+    if (e.target === lightbox) lightbox.classList.remove('open');
+  });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') lightbox.classList.remove('open');
+  });
+</script>
+
 </body>
 </html>
