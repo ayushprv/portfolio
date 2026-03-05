@@ -138,6 +138,49 @@ header h1 {
 
 .lightbox-close:hover { opacity: 1; }
 
+
+.home-btn {
+  position: fixed;
+  top: 18px;
+  left: 22px;
+  z-index: 500;
+  width: 40px;
+  height: 40px;
+  background: #f2f2f2;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.home-btn:hover {
+  background: #e0e0e0;
+  transform: scale(1.08);
+  box-shadow: 0 4px 14px rgba(0,0,0,0.13);
+}
+
+.home-btn svg {
+  width: 18px;
+  height: 18px;
+  fill: #111;
+}
+
+@media (max-width: 720px) {
+  .home-btn {
+    top: 14px;
+    left: 14px;
+    width: 34px;
+    height: 34px;
+  }
+  .home-btn svg {
+    width: 15px;
+    height: 15px;
+  }
+}
+
 .popup-overlay {
   display: flex;
   position: fixed;
@@ -305,6 +348,13 @@ header h1 {
 
 <body>
 
+
+<a href="http://ayushyadav.me/" class="home-btn" title="back to home">
+  <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+    <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+  </svg>
+</a>
+
 <header>
   <h1>before delhi woke</h1>
   <div class="tags">
@@ -316,9 +366,7 @@ header h1 {
 </header>
 
 <hr class="divider">
-<div class="nav-links">
-    <a href="http://ayushyadav.me/" class="nav">back to home</a>
-</div>
+
 <div class="masonry" id="feed">
 
   <a href="#" data-src="https://u.cubeupload.com/ayushyadavprv/1.jpg">
