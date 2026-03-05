@@ -223,16 +223,17 @@ header h1 {
 
 .popup-input-row {
   display: flex;
-  gap: 8px;
+  flex-direction: column;
+  gap: 10px;
 }
 
 .popup-input-row input {
-  flex: 1;
-  padding: 11px 14px;
+  width: 100%;
+  padding: 12px 14px;
   border: 1.5px solid #e0e0e0;
   border-radius: 10px;
   font-family: "Poppins", sans-serif;
-  font-size: 13px;
+  font-size: 14px;
   outline: none;
   transition: border-color 0.2s;
   color: #111;
@@ -241,13 +242,14 @@ header h1 {
 .popup-input-row input:focus { border-color: #111; }
 
 .popup-input-row button {
-  padding: 11px 18px;
+  width: 100%;
+  padding: 13px 18px;
   background: #111;
   color: #fff;
   border: none;
   border-radius: 10px;
   font-family: "Poppins", sans-serif;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 600;
   cursor: pointer;
   transition: background 0.2s, transform 0.15s;
@@ -256,6 +258,23 @@ header h1 {
 
 .popup-input-row button:hover { background: #333; transform: scale(1.03); }
 .popup-input-row button:disabled { background: #aaa; cursor: not-allowed; transform: none; }
+
+@media (min-width: 480px) {
+  .popup-input-row {
+    flex-direction: row;
+  }
+  .popup-input-row input {
+    flex: 1;
+    width: auto;
+    font-size: 13px;
+    padding: 11px 14px;
+  }
+  .popup-input-row button {
+    width: auto;
+    font-size: 13px;
+    padding: 11px 18px;
+  }
+}
 
 .popup-msg {
   text-align: center;
@@ -308,20 +327,20 @@ header h1 {
     <img src="https://u.cubeupload.com/ayushyadavprv/3.jpg" loading="lazy" alt="">
   </a>
 
-  <a href="#" data-src="https://u.cubeupload.com/ayushyadavprv/IMG20260226092223.jpg">
-    <img src="https://u.cubeupload.com/ayushyadavprv/IMG20260226092223.jpg" loading="lazy" alt="">
+  <a href="#" data-src="https://u.cubeupload.com/ayushyadavprv/4.jpg">
+    <img src="https://u.cubeupload.com/ayushyadavprv/4.jpg" loading="lazy" alt="">
   </a>
 
-  <a href="#" data-src="https://u.cubeupload.com/ayushyadavprv/5.jpg">
-    <img src="https://u.cubeupload.com/ayushyadavprv/5.jpg" loading="lazy" alt="">
-  </a>
-
-  <a href="#" data-src="https://u.cubeupload.com/ayushyadavprv/6.jpg">
-    <img src="https://u.cubeupload.com/ayushyadavprv/6.jpg" loading="lazy" alt="">
+  <a href="#" data-src="https://u.cubeupload.com/ayushyadavprv/IMG20260226084307.jpg">
+    <img src="https://u.cubeupload.com/ayushyadavprv/IMG20260226084307.jpg" loading="lazy" alt="">
   </a>
 
   <a href="#" data-src="https://u.cubeupload.com/ayushyadavprv/7.jpg">
     <img src="https://u.cubeupload.com/ayushyadavprv/7.jpg" loading="lazy" alt="">
+  </a>
+
+  <a href="#" data-src="https://u.cubeupload.com/ayushyadavprv/6.jpg">
+    <img src="https://u.cubeupload.com/ayushyadavprv/6.jpg" loading="lazy" alt="">
   </a>
 
   <a href="#" data-src="https://u.cubeupload.com/ayushyadavprv/8.jpg">
@@ -332,20 +351,36 @@ header h1 {
     <img src="https://u.cubeupload.com/ayushyadavprv/9.jpg" loading="lazy" alt="">
   </a>
 
-  <a href="#" data-src="https://u.cubeupload.com/ayushyadavprv/IMG20260226092541.jpg">
-    <img src="https://u.cubeupload.com/ayushyadavprv/IMG20260226092541.jpg" loading="lazy" alt="">
+  <a href="#" data-src="https://u.cubeupload.com/ayushyadavprv/5.jpg">
+    <img src="https://u.cubeupload.com/ayushyadavprv/5.jpg" loading="lazy" alt="">
   </a>
 
-  <a href="#" data-src="https://u.cubeupload.com/ayushyadavprv/4.jpg">
-    <img src="https://u.cubeupload.com/ayushyadavprv/4.jpg" loading="lazy" alt="">
+  <a href="#" data-src="https://u.cubeupload.com/ayushyadavprv/IMG20260226084459.jpg">
+    <img src="https://u.cubeupload.com/ayushyadavprv/IMG20260226084459.jpg" loading="lazy" alt="">
+  </a>
+
+  <a href="#" data-src="https://u.cubeupload.com/ayushyadavprv/IMG20260226090314.jpg">
+    <img src="https://u.cubeupload.com/ayushyadavprv/IMG20260226090314.jpg" loading="lazy" alt="">
+  </a>
+
+  <a href="#" data-src="https://u.cubeupload.com/ayushyadavprv/IMG20260226091146.jpg">
+    <img src="https://u.cubeupload.com/ayushyadavprv/IMG20260226091146.jpg" loading="lazy" alt="">
+  </a>
+
+  <a href="#" data-src="https://u.cubeupload.com/ayushyadavprv/IMG20260226091954.jpg">
+    <img src="https://u.cubeupload.com/ayushyadavprv/IMG20260226091954.jpg" loading="lazy" alt="">
   </a>
 
   <a href="#" data-src="https://u.cubeupload.com/ayushyadavprv/IMG20260226092021.jpg">
     <img src="https://u.cubeupload.com/ayushyadavprv/IMG20260226092021.jpg" loading="lazy" alt="">
   </a>
 
-  <a href="#" data-src="https://u.cubeupload.com/ayushyadavprv/IMG20260226091954.jpg">
-    <img src="https://u.cubeupload.com/ayushyadavprv/IMG20260226091954.jpg" loading="lazy" alt="">
+  <a href="#" data-src="https://u.cubeupload.com/ayushyadavprv/IMG20260226092223.jpg">
+    <img src="https://u.cubeupload.com/ayushyadavprv/IMG20260226092223.jpg" loading="lazy" alt="">
+  </a>
+
+  <a href="#" data-src="https://u.cubeupload.com/ayushyadavprv/IMG20260226092541.jpg">
+    <img src="https://u.cubeupload.com/ayushyadavprv/IMG20260226092541.jpg" loading="lazy" alt="">
   </a>
 
 </div>
