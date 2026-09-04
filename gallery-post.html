@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>gallery — ayush yadav</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--paper:#fdfbf7;--ink:#201e1b;--muted:#716a63;--line:#e4ddd5;--accent:#a06648}*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font-family:"DM Mono",monospace}.site{width:min(100% - 40px,1120px);margin:auto;padding:28px 0 64px}a{color:inherit;text-decoration:none}.topbar{display:flex;justify-content:space-between;padding-bottom:17px;border-bottom:1px solid var(--line);font-size:12px;letter-spacing:.04em}.topbar nav{display:flex;gap:20px;color:var(--muted)}.back,.meta{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}.back{display:inline-block;margin-top:42px}.title{margin:28px 0 15px;font:500 clamp(3rem,8vw,7rem)/.9 "DM Sans",sans-serif;letter-spacing:-.08em}.tags{display:flex;gap:8px;flex-wrap:wrap;margin:22px 0 46px}.tags span{border:1px solid var(--line);padding:6px 10px;color:var(--muted);font-size:11px}.photos{columns:3 280px;column-gap:14px}.photos a{display:block;break-inside:avoid;margin:0 0 14px}.photos img{width:100%;display:block;filter:saturate(.9)}.photos img:hover{filter:saturate(1)}.missing{margin-top:80px;color:var(--muted)}@media(max-width:680px){.site{width:min(100% - 28px,1120px);padding-top:20px}.topbar nav{gap:13px}.photos{columns:2 140px}}
+</style>
+</head>
+<body><main class="site">
+<header class="topbar"><a href="/">AYUSH / NOTES</a><nav><a href="/gallery.html">gallery</a><a href="/writings.html">writings</a></nav></header>
+<a class="back" href="/gallery.html">← all gallery</a>
+<section id="post"><p class="missing">Loading gallery post…</p></section>
+</main>
+<script>
+(async () => {
+  const postRoot=document.getElementById("post");
+  const [,section,year,file]=location.pathname.split("/");
+  const slug=decodeURIComponent((file||"").replace(/\.html$/,""));
+  const makeSlug=value=>String(value||"").toLowerCase().trim().replace(/[^a-z0-9]+/g,"-").replace(/^-+|-+$/g,"");
+  try {
+    const response=await fetch("/content/gallery.json",{cache:"no-store"});
+    const data=await response.json();
+    const entry=(data.entries||[]).find(item=>String(item.date||"").slice(0,4)===year&&makeSlug(item.slug||item.title)===slug);
+    if(!entry) throw new Error("Not found");
+    document.title=(entry.title||"gallery")+" — ayush yadav";
+    postRoot.replaceChildren();
+    const meta=document.createElement("div");meta.className="meta";meta.textContent=entry.date||"";
+    const title=document.createElement("h1");title.className="title";title.textContent=entry.title||"untitled";
+    const tags=document.createElement("div");tags.className="tags";(entry.tags||[]).forEach(tag=>{const item=document.createElement("span");item.textContent="#"+tag;tags.appendChild(item)});
+    const photos=document.createElement("div");photos.className="photos";(entry.photos||[]).forEach(photo=>{const link=document.createElement("a");link.href=photo.image;link.target="_blank";const img=document.createElement("img");img.src=photo.image;img.alt=photo.alt||entry.title||"Gallery photo";link.appendChild(img);photos.appendChild(link)});
+    postRoot.append(meta,title,tags,photos);
+  } catch (_) { postRoot.innerHTML='<p class="missing">This gallery post could not be found.</p>'; }
+})();
+</script></body></html>
