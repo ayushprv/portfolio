@@ -525,8 +525,6 @@ header h1 { color: var(--ink); font-family: "DM Sans", sans-serif; font-weight: 
 </div>
 
 <script>
-  const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw2NDnef4E8goJ2facXZvj_logYhQiJUzZXCTFBeFSJPFwNEj6l6duMjepN9M4MBGjJDA/exec';
-
   const overlay      = document.getElementById('popupOverlay');
   const popupClose   = document.getElementById('popupClose');
   const popupSkip    = document.getElementById('popupSkip');
@@ -546,15 +544,28 @@ header h1 { color: var(--ink); font-family: "DM Sans", sans-serif; font-weight: 
       popupMsg.className = 'popup-msg error';
       return;
     }
-    fetch(APPS_SCRIPT_URL, {
+    subscribeBtn.disabled = true;
+    subscribeBtn.textContent = 'sending…';
+    fetch('/api/subscribe', {
       method: 'POST',
-      mode: 'no-cors',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email })
-    });
-    popupMsg.textContent = '✓ you\'re subscribed!';
-    popupMsg.className = 'popup-msg';
-    setTimeout(closePopup, 1200);
+    })
+      .then(async response => {
+        const data = await response.json();
+        if (!response.ok || !data.ok) throw new Error(data.error || 'Could not subscribe you.');
+        popupMsg.textContent = data.alreadySubscribed ? 'you’re already on the list.' : 'you’re in — check your inbox.';
+        popupMsg.className = 'popup-msg';
+        setTimeout(closePopup, 1500);
+      })
+      .catch(error => {
+        popupMsg.textContent = error.message || 'Could not subscribe you right now.';
+        popupMsg.className = 'popup-msg error';
+      })
+      .finally(() => {
+        subscribeBtn.disabled = false;
+        subscribeBtn.textContent = 'notify me';
+      });
   });
 
   emailInput.addEventListener('keydown', e => { if (e.key === 'Enter') subscribeBtn.click(); });
