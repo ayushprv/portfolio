@@ -1,0 +1,26 @@
+name: Notify subscribers
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "content/gallery.json"
+      - "content/writings.json"
+      - "gallery/**/*.html"
+
+permissions:
+  contents: read
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: node scripts/notify-subscribers.mjs
+        env:
+          APPS_SCRIPT_URL: ${{ secrets.APPS_SCRIPT_URL }}
+          SUBSCRIBER_WEBHOOK_SECRET: ${{ secrets.SUBSCRIBER_WEBHOOK_SECRET }}
+          SITE_URL: https://www.ayushyadav.me
