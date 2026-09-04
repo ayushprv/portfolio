@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <title>i walked into the year</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="icon" type="image/png" href="https://i.pinimg.com/736x/b4/be/20/b4be20054573a7917b2e3b7239bfce20.jpg">
 
 <style>
@@ -120,6 +120,19 @@ hr{
   }
 }
 
+
+:root { --paper: #fdfbf7; --ink: #201e1b; --muted: #716a63; --line: #e4ddd5; --accent: #a06648; }
+body { background: var(--paper); color: var(--ink); font-family: "DM Mono", monospace; }
+.top-heading { margin: 0; padding: 34px 20px 0; color: var(--ink); font-family: "DM Sans", sans-serif; font-size: clamp(2.2rem, 6vw, 4.5rem); font-weight: 500; letter-spacing: -.07em; line-height: .95; }
+.tags { margin-top: 16px; }
+.tags span { background: transparent; border: 1px solid var(--line); border-radius: 0; color: var(--muted); font-family: "DM Mono", monospace; font-size: 11px; }
+hr { width: min(100% - 40px, 1060px); margin: 24px auto 36px; background: var(--line); }
+.writings { margin-left: 0; }
+.banner { max-width: 1120px; gap: 14px; padding: 0 20px 60px; align-items: flex-start; }
+.banner a, .banner img, .sixteenbynineimg { border-radius: 0; box-shadow: none; }
+.banner img { filter: saturate(.9); }
+.banner a:hover { box-shadow: none; transform: translateY(-3px); }
+.banner a:hover img { transform: scale(1.025); filter: saturate(1); }
 </style>
 </head>
 <body>
