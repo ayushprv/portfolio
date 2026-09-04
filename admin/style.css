@@ -1,0 +1,50 @@
+:root {
+  --studio-paper: #fdfbf7;
+  --studio-ink: #201e1b;
+  --studio-muted: #716a63;
+  --studio-line: #e4ddd5;
+  --studio-accent: #a06648;
+}
+html, body {
+  background: var(--studio-paper) !important;
+  color: var(--studio-ink) !important;
+  font-family: "DM Sans", system-ui, sans-serif !important;
+}
+body::before {
+  content: "AYUSH / STUDIO";
+  position: fixed;
+  z-index: 9999;
+  left: 24px;
+  bottom: 18px;
+  color: var(--studio-accent);
+  font: 500 10px/1 "DM Mono", monospace;
+  letter-spacing: .12em;
+  pointer-events: none;
+}
+button, input, textarea, select {
+  font-family: "DM Sans", system-ui, sans-serif !important;
+}
+button {
+  border-radius: 2px !important;
+}
+textarea {
+  line-height: 1.7 !important;
+}
+[class*="Sidebar"], [class*="Toolbar"], [class*="AppHeader"] {
+  background: var(--studio-paper) !important;
+  border-color: var(--studio-line) !important;
+}
+[class*="Sidebar"] a, [class*="Sidebar"] button {
+  font-family: "DM Mono", monospace !important;
+  font-size: 12px !important;
+  letter-spacing: .03em !important;
+}
+[class*="Card"], [class*="Collection"], [class*="Entry"] {
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+[class*="Preview"] {
+  background: var(--studio-paper) !important;
+  color: var(--studio-ink) !important;
+  font-family: "DM Sans", system-ui, sans-serif !important;
+}
