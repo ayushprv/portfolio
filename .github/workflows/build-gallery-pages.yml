@@ -1,0 +1,26 @@
+name: Build gallery pages
+on:
+  push:
+    branches: [main]
+    paths:
+      - content/gallery.json
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-gallery-pages:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: node scripts/build-gallery-pages.mjs
+      - run: |
+          git config user.name "Gallery builder"
+          git config user.email "actions@github.com"
+          git add gallery
+          git diff --cached --quiet || git commit -m "Build gallery pages [skip ci]"
+          git push
