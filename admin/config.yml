@@ -1,0 +1,28 @@
+backend:
+  name: github
+  repo: ayushprv/portfolio
+  branch: main
+  base_url: https://www.ayushyadav.me
+  auth_endpoint: api/auth
+  site_domain: www.ayushyadav.me
+
+publish_mode: simple
+
+collections:
+  - name: writings
+    label: Writings
+    files:
+      - label: Writing desk
+        name: writing-desk
+        file: content/writings.json
+        format: json
+        fields:
+          - label: Entries
+            name: entries
+            widget: list
+            summary: "{{fields.title}} — {{fields.date}}"
+            fields:
+              - { label: Title, name: title, widget: string }
+              - { label: Date, name: date, widget: datetime, format: "YYYY-MM-DD", time_format: false }
+              - { label: Short introduction, name: excerpt, widget: text }
+              - { label: Writing, name: body, widget: markdown }
