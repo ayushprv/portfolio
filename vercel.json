@@ -1,0 +1,15 @@
+{
+  "rewrites": [
+    {
+      "source": "/gallery/:path*",
+      "destination": "/gallery-post.html"
+    }
+  ],
+  "redirects": [
+    {
+      "source": "/blogs.html",
+      "destination": "/gallery.html",
+      "permanent": true
+    }
+  ]
+}
