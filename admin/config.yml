@@ -9,9 +9,14 @@ publish_mode: simple
 media_folder: "images/uploads"
 public_folder: "/images/uploads"
 
+editor:
+  preview: true
+
 collections:
   - name: writings
     label: Writings
+    label_singular: Writing
+    description: Long-form notes with a live reading preview.
     files:
       - label: Writing desk
         name: writing-desk
@@ -25,6 +30,39 @@ collections:
             fields:
               - { label: Title, name: title, widget: string }
               - { label: Date, name: date, widget: datetime, format: "YYYY-MM-DD", time_format: false }
-              - { label: Short introduction, name: excerpt, widget: text }
-              - { label: Writing, name: body, widget: markdown }
-              
+              - { label: Subtitle / short introduction, name: excerpt, widget: text }
+              - label: Writing
+                name: body
+                widget: markdown
+                buttons: [bold, italic, link, heading-one, heading-two, quote, bulleted-list, numbered-list]
+                editor_components: [image, code-block]
+
+  - name: gallery
+    label: Gallery
+    label_singular: Gallery post
+    description: Add a title, tags, and one or more photos.
+    files:
+      - label: Gallery desk
+        name: gallery-desk
+        file: content/gallery.json
+        format: json
+        fields:
+          - label: Posts
+            name: entries
+            widget: list
+            summary: "{{fields.title}} — {{fields.date}}"
+            fields:
+              - { label: Title, name: title, widget: string }
+              - { label: Date, name: date, widget: datetime, format: "YYYY-MM-DD", time_format: false }
+              - label: Tags
+                name: tags
+                widget: list
+                field: { label: Tag, name: tag, widget: string }
+              - label: Photos
+                name: photos
+                widget: list
+                min: 1
+                summary: "{{fields.alt}}"
+                fields:
+                  - { label: Photo, name: image, widget: image }
+                  - { label: Alt text / caption, name: alt, widget: string }
