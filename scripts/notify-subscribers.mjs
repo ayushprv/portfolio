@@ -6,8 +6,8 @@ const changed = [...new Set([
   ...(event.head_commit?.modified || [])
 ])];
 const siteUrl = process.env.SITE_URL || "https://www.ayushyadav.me";
-const endpoint = process.env.APPS_SCRIPT_URL;
-const secret = process.env.SUBSCRIBER_WEBHOOK_SECRET;
+const endpoint = process.env.https://script.google.com/macros/s/AKfycbzJtZqQg7BOORHvVfwxkUumklaLDEjJtuuw3DLBPXgzn9twIBfEZKqwZft-PZvZnCPWAg/exec;
+const secret = process.env.7139f3d0bdfd0ddc334f7318433d0135209deda0c5d7164f3847d7dc8ebf98bc;
 
 if (!endpoint || !secret) {
   throw new Error("Missing APPS_SCRIPT_URL or SUBSCRIBER_WEBHOOK_SECRET.");
