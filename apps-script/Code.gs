@@ -72,9 +72,9 @@ function publish_(data) {
 }
 
 function subscriberSheet_() {
-  const spreadsheetId = CONFIG.getProperty("SPREADSHEET_ID");
+  const spreadsheetId = CONFIG.getProperty("1BRpfw79WR-Oxwu5LKz3qAVrvLaazWvrwhzltEsV6u3w");
   if (!spreadsheetId) throw new Error("Set SPREADSHEET_ID in Script Properties.");
-  const spreadsheet = SpreadsheetApp.openById(spreadsheetId);
+  const spreadsheet = SpreadsheetApp.openById(1BRpfw79WR-Oxwu5LKz3qAVrvLaazWvrwhzltEsV6u3w);
   const sheet = spreadsheet.getSheetByName("Subscribers") || spreadsheet.insertSheet("Subscribers");
   if (sheet.getLastRow() === 0) {
     sheet.appendRow(["Email", "Subscribed at", "Status", "Source", "Last notified at"]);
