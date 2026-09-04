@@ -10,6 +10,11 @@
       "source": "/blogs.html",
       "destination": "/gallery.html",
       "permanent": true
+    },
+    {
+      "source": "/blogs/2026/:path*",
+      "destination": "/gallery/2026/:path*",
+      "permanent": true
     }
   ]
 }
