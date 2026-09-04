@@ -5,6 +5,7 @@ const changed = [...new Set([
   ...(event.head_commit?.added || []),
   ...(event.head_commit?.modified || [])
 ])];
+console.log("DEBUG changed:", JSON.stringify(changed));
 const siteUrl = process.env.SITE_URL || "https://www.ayushyadav.me";
 const endpoint = process.env.APPS_SCRIPT_URL;
 const secret = process.env.SUBSCRIBER_WEBHOOK_SECRET;
@@ -46,6 +47,7 @@ if (!notices.length) {
 }
 
 for (const notice of notices) {
+  console.log("DEBUG notices:", JSON.stringify(notices));
   const response = await fetch(endpoint, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
