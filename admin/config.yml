@@ -4,10 +4,8 @@ backend:
   branch: main
   base_url: https://www.ayushyadav.me
   auth_endpoint: api/auth
-  site_domain: www.ayushyadav.me
 
 publish_mode: simple
-
 media_folder: "images/uploads"
 public_folder: "/images/uploads"
 
@@ -29,3 +27,4 @@ collections:
               - { label: Date, name: date, widget: datetime, format: "YYYY-MM-DD", time_format: false }
               - { label: Short introduction, name: excerpt, widget: text }
               - { label: Writing, name: body, widget: markdown }
+              
