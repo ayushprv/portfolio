@@ -42,14 +42,26 @@ module.exports = async (req, res) => {
       return;
     }
 
-    const message = `authorization:github:success:${JSON.stringify({ token: token.access_token, provider: "github" })}`;
+    const payload = { token: token.access_token, provider: "github" };
     const callbackScript = `<script>
       (() => {
-        const deliver = () => window.opener?.postMessage(${JSON.stringify(message)}, ${JSON.stringify(siteUrl)});
-        deliver();
-        window.setTimeout(deliver, 150);
-        window.setTimeout(deliver, 450);
-        window.setTimeout(() => window.close(), 700);
+        const opener = window.opener;
+        if (!opener) {
+          document.body.textContent = "This sign-in window was opened without the CMS. Close it and start again from the CMS.";
+          return;
+        }
+
+        function receiveMessage(event) {
+          opener.postMessage(
+            "authorization:github:success:" + ${JSON.stringify(JSON.stringify(payload))},
+            event.origin
+          );
+          window.removeEventListener("message", receiveMessage, false);
+          window.setTimeout(() => window.close(), 100);
+        }
+
+        window.addEventListener("message", receiveMessage, false);
+        opener.postMessage("authorizing:github", "*");
       })();
     </script>`;
     res.setHeader("Set-Cookie", "cms_oauth_state=; Path=/api; HttpOnly; Secure; SameSite=Lax; Max-Age=0");
