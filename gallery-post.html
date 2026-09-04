@@ -6,7 +6,7 @@
 <title>gallery — ayush yadav</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-:root{--paper:#fdfbf7;--ink:#201e1b;--muted:#716a63;--line:#e4ddd5;--accent:#a06648}*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font-family:"DM Mono",monospace}.site{width:min(100% - 40px,1120px);margin:auto;padding:28px 0 64px}a{color:inherit;text-decoration:none}.topbar{display:flex;justify-content:space-between;padding-bottom:17px;border-bottom:1px solid var(--line);font-size:12px;letter-spacing:.04em}.topbar nav{display:flex;gap:20px;color:var(--muted)}.back,.meta{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}.back{display:inline-block;margin-top:42px}.title{margin:28px 0 15px;font:500 clamp(3rem,8vw,7rem)/.9 "DM Sans",sans-serif;letter-spacing:-.08em}.tags{display:flex;gap:8px;flex-wrap:wrap;margin:22px 0 46px}.tags span{border:1px solid var(--line);padding:6px 10px;color:var(--muted);font-size:11px}.photos{columns:3 280px;column-gap:14px}.photos a{display:block;break-inside:avoid;margin:0 0 14px}.photos img{width:100%;display:block;filter:saturate(.9)}.photos img:hover{filter:saturate(1)}.missing{margin-top:80px;color:var(--muted)}@media(max-width:680px){.site{width:min(100% - 28px,1120px);padding-top:20px}.topbar nav{gap:13px}.photos{columns:2 140px}}
+:root{--paper:#fdfbf7;--ink:#201e1b;--muted:#716a63;--line:#e4ddd5;--accent:#a06648}*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font-family:"DM Mono",monospace}.site{width:min(100% - 40px,1120px);margin:auto;padding:28px 0 64px}a{color:inherit;text-decoration:none}.topbar{display:flex;justify-content:space-between;padding-bottom:17px;border-bottom:1px solid var(--line);font-size:12px;letter-spacing:.04em}.topbar nav{display:flex;gap:20px;color:var(--muted)}.back,.meta{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}.back{display:inline-block;margin-top:42px}.title{margin:28px 0 15px;font:500 clamp(3rem,8vw,7rem)/.9 "DM Sans",sans-serif;letter-spacing:-.08em}.tags{display:flex;gap:8px;flex-wrap:wrap;margin:22px 0 46px}.tags span{border:1px solid var(--line);padding:6px 10px;color:var(--muted);font-size:11px}.photos{columns:3 280px;column-gap:14px}.photos a{display:block;break-inside:avoid;margin:0 0 14px}.photos img{width:100%;display:block;filter:saturate(.9)}.photos img:hover{filter:saturate(1)}.missing{margin-top:80px;color:var(--muted)}.subscribe-popover{position:fixed;inset:0;z-index:10;display:grid;place-items:center;padding:20px;background:rgba(32,30,27,.35)}.subscribe-popover[hidden]{display:none}.subscribe-box{position:relative;width:min(100%,460px);padding:38px 34px 32px;border:1px solid var(--line);background:var(--paper);box-shadow:0 18px 50px rgba(48,38,30,.12)}.subscribe-close{position:absolute;top:12px;right:14px;border:0;background:none;color:var(--muted);font:inherit;font-size:22px;cursor:pointer}.subscribe-box h2{margin:0;font:500 clamp(2rem,6vw,3.2rem)/.92 "DM Sans",sans-serif;letter-spacing:-.06em}.subscribe-box p{margin:14px 0 22px;color:var(--muted);font-size:12px;line-height:1.65}.subscribe-form{display:flex;gap:8px}.subscribe-form input{min-width:0;flex:1;padding:11px 12px;border:1px solid var(--line);border-radius:0;background:#fffefa;color:var(--ink);font:inherit;font-size:12px}.subscribe-form button{padding:11px 14px;border:0;border-radius:0;background:var(--ink);color:var(--paper);cursor:pointer;font:inherit;font-size:12px}.subscribe-form button:hover{background:var(--accent)}.subscribe-message{min-height:18px;margin:10px 0 0!important;font-size:11px!important}.subscribe-message.error{color:#9c3d2e}@media(max-width:500px){.subscribe-box{padding:34px 22px 24px}.subscribe-form{flex-direction:column}.subscribe-form button{width:100%}}@media(max-width:680px){.site{width:min(100% - 28px,1120px);padding-top:20px}.topbar nav{gap:13px}.photos{columns:2 140px}}
 </style>
 </head>
 <body><main class="site">
@@ -14,6 +14,18 @@
 <a class="back" href="/gallery.html">← all gallery</a>
 <section id="post"><p class="missing">Loading gallery post…</p></section>
 </main>
+<div class="subscribe-popover" id="subscribe-popover" hidden>
+  <section class="subscribe-box" role="dialog" aria-modal="true" aria-labelledby="subscribe-title">
+    <button class="subscribe-close" type="button" aria-label="Close subscription form">×</button>
+    <h2 id="subscribe-title">stay in the loop.</h2>
+    <p>get the next gallery post or note in your inbox.</p>
+    <form class="subscribe-form" id="subscribe-form">
+      <input id="subscribe-email" type="email" autocomplete="email" placeholder="your@email.com" aria-label="Email address" required>
+      <button type="submit">notify me</button>
+    </form>
+    <p class="subscribe-message" id="subscribe-message" aria-live="polite"></p>
+  </section>
+</div>
 <script>
 (async () => {
   const postRoot=document.getElementById("post");
@@ -34,4 +46,29 @@
     postRoot.append(meta,title,tags,photos);
   } catch (_) { postRoot.innerHTML='<p class="missing">This gallery post could not be found.</p>'; }
 })();
+  const popover=document.getElementById("subscribe-popover");
+  const subscribeForm=document.getElementById("subscribe-form");
+  const subscribeEmail=document.getElementById("subscribe-email");
+  const subscribeMessage=document.getElementById("subscribe-message");
+  const closeSubscribe=()=>{popover.hidden=true};
+  document.querySelector(".subscribe-close").addEventListener("click",closeSubscribe);
+  popover.addEventListener("click",event=>{if(event.target===popover)closeSubscribe()});
+  window.setTimeout(()=>{popover.hidden=false},900);
+  subscribeForm.addEventListener("submit",async event=>{
+    event.preventDefault();
+    const button=subscribeForm.querySelector("button");
+    button.disabled=true;button.textContent="sending…";
+    subscribeMessage.textContent="";subscribeMessage.className="subscribe-message";
+    try{
+      const response=await fetch("/api/subscribe",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({email:subscribeEmail.value})});
+      const result=await response.json();
+      if(!response.ok||!result.ok)throw new Error(result.error||"Could not subscribe you.");
+      subscribeMessage.textContent=result.alreadySubscribed?"you’re already on the list.":"you’re in — check your inbox.";
+      subscribeForm.reset();
+      window.setTimeout(closeSubscribe,1500);
+    }catch(error){
+      subscribeMessage.textContent=error.message||"Could not subscribe you right now.";
+      subscribeMessage.className="subscribe-message error";
+    }finally{button.disabled=false;button.textContent="notify me";}
+  });
 </script></body></html>
