@@ -15,11 +15,21 @@ a { color: inherit; text-decoration: none; }
 .topbar { display: flex; align-items: center; justify-content: space-between; padding-bottom: 17px; border-bottom: 1px solid var(--line); font-size: 12px; letter-spacing: .04em; }
 .topbar nav { display: flex; gap: 20px; color: var(--muted); }
 .topbar a:hover { color: var(--accent); }
-.intro { margin: clamp(88px, 16vw, 180px) 0 0; }
+.intro { margin: clamp(88px, 16vw, 180px) 0 52px; }
 .kicker { color: var(--accent); font-size: 11px; letter-spacing: .09em; text-transform: uppercase; }
 h1 { max-width: 720px; margin: 12px 0 0; font-family: "DM Sans", sans-serif; font-size: clamp(3.8rem, 10vw, 8rem); font-weight: 500; letter-spacing: -.085em; line-height: .86; }
-.message { max-width: 410px; margin: 36px 0 0; padding-top: 15px; border-top: 1px solid var(--ink); color: var(--muted); font-size: 14px; line-height: 1.75; }
-.message strong { color: var(--ink); font-weight: 500; }
+.lede { max-width: 470px; margin: 32px 0 0; color: var(--muted); font-size: 14px; line-height: 1.75; }
+.entries { display: grid; gap: 42px; }
+.entry { padding-top: 14px; border-top: 1px solid var(--ink); }
+.entry-meta { color: var(--accent); font-size: 11px; letter-spacing: .07em; text-transform: uppercase; }
+.entry h2 { margin: 12px 0 0; font-family: "DM Sans", sans-serif; font-size: clamp(2rem, 4vw, 3.8rem); font-weight: 500; letter-spacing: -.065em; line-height: .96; }
+.entry-summary { max-width: 570px; margin: 16px 0 0; color: var(--muted); font-size: 14px; line-height: 1.75; }
+.entry details { max-width: 680px; margin-top: 20px; }
+.entry summary { cursor: pointer; color: var(--ink); font-size: 12px; }
+.entry-body { margin-top: 20px; color: var(--muted); font-family: "DM Sans", sans-serif; font-size: 17px; line-height: 1.75; }
+.entry-body p { margin: 0 0 18px; }
+.empty { max-width: 410px; padding-top: 15px; border-top: 1px solid var(--ink); color: var(--muted); font-size: 14px; line-height: 1.75; }
+.empty strong { color: var(--ink); font-weight: 500; }
 @media (max-width: 680px) { .site { width: min(100% - 28px, 1060px); padding-top: 20px; } .topbar nav { gap: 13px; } }
 </style>
 </head>
@@ -30,10 +40,54 @@ h1 { max-width: 720px; margin: 12px 0 0; font-family: "DM Sans", sans-serif; fon
     <nav><a href="https://www.ayushyadav.me/">home</a><a href="https://www.ayushyadav.me/blogs.html">gallery</a><a href="mailto:ayushyadavprv">mail</a></nav>
   </header>
   <section class="intro">
-    <div class="kicker">notes in progress</div>
+    <div class="kicker">notes &amp; essays</div>
     <h1>writings.</h1>
-    <p class="message"><strong>A quiet corner for longer thoughts.</strong><br>There’s nothing here just yet, but it’s being kept open for when the right words arrive.</p>
+    <p class="lede">A quiet corner for longer thoughts, collected as they arrive.</p>
+  </section>
+  <section class="entries" id="entries" aria-live="polite">
+    <div class="empty"><strong>Nothing published yet.</strong><br>When the right words arrive, they’ll live here.</div>
   </section>
 </main>
+<script>
+(async () => {
+  const container = document.getElementById("entries");
+  try {
+    const response = await fetch("/content/writings.json", { cache: "no-store" });
+    if (!response.ok) return;
+    const data = await response.json();
+    const entries = Array.isArray(data.entries) ? data.entries : [];
+    if (!entries.length) return;
+    container.replaceChildren();
+    entries.sort((a, b) => new Date(b.date || 0) - new Date(a.date || 0)).forEach((entry) => {
+      const article = document.createElement("article");
+      article.className = "entry";
+      const meta = document.createElement("div");
+      meta.className = "entry-meta";
+      meta.textContent = entry.date || "undated";
+      const title = document.createElement("h2");
+      title.textContent = entry.title || "untitled";
+      const summary = document.createElement("p");
+      summary.className = "entry-summary";
+      summary.textContent = entry.excerpt || "";
+      article.append(meta, title, summary);
+      if (entry.body) {
+        const details = document.createElement("details");
+        const read = document.createElement("summary");
+        read.textContent = "read note →";
+        const body = document.createElement("div");
+        body.className = "entry-body";
+        String(entry.body).split(/\n{2,}/).filter(Boolean).forEach((paragraph) => {
+          const p = document.createElement("p");
+          p.textContent = paragraph;
+          body.appendChild(p);
+        });
+        details.append(read, body);
+        article.appendChild(details);
+      }
+      container.appendChild(article);
+    });
+  } catch (_) { /* The empty state stays visible if content is unavailable. */ }
+})();
+</script>
 </body>
 </html>
