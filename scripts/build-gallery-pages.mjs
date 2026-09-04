@@ -1,0 +1,14 @@
+import { readFile, writeFile, mkdir } from "node:fs/promises";
+import path from "node:path";
+
+const escape = value => String(value ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+const slugify = value => String(value ?? "").toLowerCase().trim().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "") || "untitled";
+const page = post => `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${escape(post.title)} — ayush yadav</title><link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet"><style>:root{--paper:#fdfbf7;--ink:#201e1b;--muted:#716a63;--line:#e4ddd5;--accent:#a06648}*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font-family:"DM Mono",monospace}.site{width:min(100% - 40px,1120px);margin:auto;padding:28px 0 64px}a{color:inherit;text-decoration:none}.topbar{display:flex;justify-content:space-between;padding-bottom:17px;border-bottom:1px solid var(--line);font-size:12px;letter-spacing:.04em}.topbar nav{display:flex;gap:20px;color:var(--muted)}.back,.meta{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}.back{display:inline-block;margin-top:42px}.title{margin:28px 0 15px;font:500 clamp(3rem,8vw,7rem)/.9 "DM Sans",sans-serif;letter-spacing:-.08em}.tags{display:flex;gap:8px;flex-wrap:wrap;margin:22px 0 46px}.tags span{border:1px solid var(--line);padding:6px 10px;color:var(--muted);font-size:11px}.photos{columns:3 280px;column-gap:14px}.photos a{display:block;break-inside:avoid;margin:0 0 14px}.photos img{width:100%;display:block;filter:saturate(.9)}@media(max-width:680px){.site{width:min(100% - 28px,1120px);padding-top:20px}.photos{columns:2 140px}}</style></head><body><main class="site"><header class="topbar"><a href="/">AYUSH / NOTES</a><nav><a href="/gallery.html">gallery</a><a href="/writings.html">writings</a></nav></header><a class="back" href="/gallery.html">← all gallery</a><div class="meta">${escape(post.date)}</div><h1 class="title">${escape(post.title)}</h1><div class="tags">${(post.tags || []).map(tag => `<span>#${escape(tag)}</span>`).join("")}</div><div class="photos">${(post.photos || []).map(photo => `<a href="${escape(photo.image)}" target="_blank"><img src="${escape(photo.image)}" alt="${escape(photo.alt || post.title)}"></a>`).join("")}</div></main></body></html>`;
+
+const { entries = [] } = JSON.parse(await readFile("content/gallery.json", "utf8"));
+for (const post of entries) {
+  const year = String(post.date || new Date().getFullYear()).slice(0, 4);
+  const file = path.join("gallery", year, `${slugify(post.slug || post.title)}.html`);
+  await mkdir(path.dirname(file), { recursive: true });
+  await writeFile(file, page(post));
+}
