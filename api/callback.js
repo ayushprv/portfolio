@@ -43,9 +43,18 @@ module.exports = async (req, res) => {
     }
 
     const message = `authorization:github:success:${JSON.stringify({ token: token.access_token, provider: "github" })}`;
+    const callbackScript = `<script>
+      (() => {
+        const deliver = () => window.opener?.postMessage(${JSON.stringify(message)}, ${JSON.stringify(siteUrl)});
+        deliver();
+        window.setTimeout(deliver, 150);
+        window.setTimeout(deliver, 450);
+        window.setTimeout(() => window.close(), 700);
+      })();
+    </script>`;
     res.setHeader("Set-Cookie", "cms_oauth_state=; Path=/api; HttpOnly; Secure; SameSite=Lax; Max-Age=0");
     res.setHeader("Content-Type", "text/html; charset=utf-8");
-    res.end(`<!doctype html><title>Signed in</title><script>window.opener.postMessage(${JSON.stringify(message)}, ${JSON.stringify(siteUrl)}); window.close();</script><p>Signed in. You can close this window.</p>`);
+    res.end(`<!doctype html><title>Signed in</title>${callbackScript}<p>Signed in. You can close this window.</p>`);
   } catch (_) {
     fail(res, "Could not reach GitHub. Please try again.");
   }
