@@ -95,5 +95,8 @@ for (const notice of notices) {
   });
   const result = await response.json().catch(() => ({}));
   if (!response.ok || !result.ok) throw new Error(result.error || "Subscriber notification failed.");
-  console.log(`Sent ${result.sent || 0} notification(s) for ${notice.title}.`);
+  if (!Number.isInteger(result.sent) || result.sent < 1) {
+    throw new Error(`No active subscribers were notified for ${notice.title}. Check the subscriber Sheet status values.`);
+  }
+  console.log(`Sent ${result.sent} notification(s) for ${notice.title}.`);
 }
