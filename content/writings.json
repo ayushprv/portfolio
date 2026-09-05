@@ -17,6 +17,12 @@
       "date": "2026-09-05",
       "excerpt": "simple",
       "body": "and short"
+    },
+    {
+      "title": "Delivery Test",
+      "date": "2026-09-05",
+      "excerpt": "Notification delivery check",
+      "body": "This is a temporary notification delivery test."
     }
   ]
 }
