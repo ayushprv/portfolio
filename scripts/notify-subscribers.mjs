@@ -1,10 +1,23 @@
 import { readFile } from "node:fs/promises";
+import { execFileSync } from "node:child_process";
 
 const event = JSON.parse(await readFile(process.env.GITHUB_EVENT_PATH, "utf8"));
-const changed = [...new Set([
+let changed = [...new Set([
   ...(event.head_commit?.added || []),
   ...(event.head_commit?.modified || [])
 ])];
+
+// GitHub occasionally omits head_commit file lists. Read the checked-out commit
+// directly so a real CMS publish can never silently become a no-op.
+if (!changed.length) {
+  try {
+    changed = execFileSync("git", ["diff", "--name-only", "HEAD^", "HEAD"], { encoding: "utf8" })
+      .split(/\\r?\\n/)
+      .filter(Boolean);
+  } catch (error) {
+    console.warn("Could not read the Git diff:", error.message);
+  }
+}
 const siteUrl = process.env.SITE_URL || "https://www.ayushyadav.me";
 const endpoint = process.env.APPS_SCRIPT_URL;
 const secret = process.env.SUBSCRIBER_WEBHOOK_SECRET;
