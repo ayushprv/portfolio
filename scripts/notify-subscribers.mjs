@@ -58,10 +58,11 @@ async function newlyAddedEntries(path) {
   return currentEntries.filter(entry => !oldKeys.has(entryKey(entry)));
 }
 
+const changedFilesWereUnavailable = changed.length === 0;
 console.log("Changed files:", JSON.stringify(changed));
 const notices = [];
 
-if (changed.includes("content/gallery.json")) {
+if (changedFilesWereUnavailable || changed.includes("content/gallery.json")) {
   const entries = await newlyAddedEntries("content/gallery.json");
   for (const entry of entries) {
     const year = String(entry.date || new Date().getFullYear()).slice(0, 4);
@@ -73,7 +74,7 @@ if (changed.includes("content/gallery.json")) {
   }
 }
 
-if (changed.includes("content/writings.json")) {
+if (changedFilesWereUnavailable || changed.includes("content/writings.json")) {
   const entries = await newlyAddedEntries("content/writings.json");
   for (const entry of entries) {
     notices.push({
