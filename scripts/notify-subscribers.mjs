@@ -34,7 +34,6 @@ if (!repository || !sha) {
 
 const raw = (ref, path) => `https://raw.githubusercontent.com/${repository}/${ref}/${path}`;
 const slugify = value => String(value || "").toLowerCase().trim().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "") || "untitled";
-const entryKey = entry => JSON.stringify(entry);
 
 async function readJson(ref, path) {
   const response = await fetch(raw(ref, path));
@@ -54,8 +53,15 @@ async function newlyAddedEntries(path) {
   if (!previousResponse.ok) throw new Error(`Could not compare the previous version of ${path}.`);
 
   const previous = await previousResponse.json();
-  const oldKeys = new Set((Array.isArray(previous.entries) ? previous.entries : []).map(entryKey));
-  return currentEntries.filter(entry => !oldKeys.has(entryKey(entry)));
+  const previousEntries = Array.isArray(previous.entries) ? previous.entries : [];
+
+  // CMS list items are appended by default. Comparing the full object here used
+  // to turn any body/title edit into a "new" item and re-email subscribers.
+  // A notification now goes out only when the list itself grows; edits, deletes,
+  // and reordering remain silent.
+  return currentEntries.length > previousEntries.length
+    ? currentEntries.slice(previousEntries.length)
+    : [];
 }
 
 // The workflow itself runs only for CMS-content changes, so inspect both

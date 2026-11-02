@@ -28,6 +28,15 @@ h1 { max-width: 720px; margin: 12px 0 0; font-family: "DM Sans", sans-serif; fon
 .entry summary { cursor: pointer; color: var(--ink); font-size: 12px; }
 .entry-body { margin-top: 20px; color: var(--muted); font-family: "DM Sans", sans-serif; font-size: 17px; line-height: 1.75; }
 .entry-body p { margin: 0 0 18px; }
+.entry-body h1, .entry-body h2, .entry-body h3 { margin: 0 0 14px; color: var(--ink); font-weight: 500; letter-spacing: -.045em; line-height: 1.05; }
+.entry-body h1 { font-size: clamp(1.8rem, 4vw, 2.8rem); }
+.entry-body h2 { font-size: clamp(1.45rem, 3vw, 2rem); }
+.entry-body h3 { font-size: 1.2rem; }
+.entry-body ol, .entry-body ul { margin: 0 0 18px; padding-left: 1.45em; }
+.entry-body li { margin: 0 0 8px; }
+.entry-body blockquote { margin: 0 0 18px; padding-left: 16px; border-left: 2px solid var(--accent); color: var(--ink); }
+.entry-body pre { overflow-x: auto; margin: 0 0 18px; padding: 14px; background: #f2eee8; font: 13px/1.55 "DM Mono", monospace; }
+.entry-body code { font-family: "DM Mono", monospace; }
 .empty { max-width: 410px; padding-top: 15px; border-top: 1px solid var(--ink); color: var(--muted); font-size: 14px; line-height: 1.75; }
 .empty strong { color: var(--ink); font-weight: 500; }
 @media (max-width: 680px) { .site { width: min(100% - 28px, 1060px); padding-top: 20px; } .topbar nav { gap: 13px; } }
@@ -51,6 +60,121 @@ h1 { max-width: 720px; margin: 12px 0 0; font-family: "DM Sans", sans-serif; fon
 <script>
 (async () => {
   const container = document.getElementById("entries");
+
+  function inlineMarkdown(text) {
+    const fragment = document.createDocumentFragment();
+    const expression = /(`[^`]*`|\*\*[^*]+\*\*|\*[^*]+\*|\[[^\]]+\]\(https?:\/\/[^\s)]+\))/g;
+    let cursor = 0;
+
+    for (const match of text.matchAll(expression)) {
+      fragment.append(document.createTextNode(text.slice(cursor, match.index)));
+      const token = match[0];
+      if (token.startsWith("**")) {
+        const strong = document.createElement("strong");
+        strong.textContent = token.slice(2, -2);
+        fragment.append(strong);
+      } else if (token.startsWith("*")) {
+        const emphasis = document.createElement("em");
+        emphasis.textContent = token.slice(1, -1);
+        fragment.append(emphasis);
+      } else if (token.startsWith("`")) {
+        const code = document.createElement("code");
+        code.textContent = token.slice(1, -1);
+        fragment.append(code);
+      } else {
+        const [, label, href] = token.match(/^\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)$/) || [];
+        const link = document.createElement("a");
+        link.textContent = label || token;
+        link.href = href || "#";
+        link.target = "_blank";
+        link.rel = "noopener noreferrer";
+        fragment.append(link);
+      }
+      cursor = match.index + token.length;
+    }
+    fragment.append(document.createTextNode(text.slice(cursor)));
+    return fragment;
+  }
+
+  function appendMarkdownLines(element, lines) {
+    lines.forEach((line, index) => {
+      const hardBreak = /\\\s*$/.test(line) || / {2}$/.test(line);
+      element.append(inlineMarkdown(line.replace(/(\\| {2})$/, "")));
+      if (index < lines.length - 1) {
+        element.append(hardBreak ? document.createElement("br") : document.createTextNode(" "));
+      }
+    });
+  }
+
+  function renderMarkdown(markdown) {
+    const fragment = document.createDocumentFragment();
+    const lines = String(markdown).replace(/\r/g, "").split("\n");
+    let index = 0;
+    const isBlockStart = line => /^(#{1,3}\s+|>\s?|[-*+]\s+|\d+\.\s+|```)/.test(line);
+
+    while (index < lines.length) {
+      const line = lines[index];
+      if (!line.trim()) { index += 1; continue; }
+
+      const heading = line.match(/^(#{1,3})\s+(.+)$/);
+      if (heading) {
+        const element = document.createElement(`h${heading[1].length}`);
+        element.append(inlineMarkdown(heading[2]));
+        fragment.append(element);
+        index += 1;
+        continue;
+      }
+
+      if (line.startsWith("```")) {
+        const code = [];
+        index += 1;
+        while (index < lines.length && !lines[index].startsWith("```")) code.push(lines[index++]);
+        if (index < lines.length) index += 1;
+        const pre = document.createElement("pre");
+        const codeElement = document.createElement("code");
+        codeElement.textContent = code.join("\n");
+        pre.append(codeElement);
+        fragment.append(pre);
+        continue;
+      }
+
+      if (line.startsWith(">")) {
+        const quote = document.createElement("blockquote");
+        const quoteLines = [];
+        while (index < lines.length && lines[index].startsWith(">")) quoteLines.push(lines[index++].replace(/^>\s?/, ""));
+        appendMarkdownLines(quote, quoteLines);
+        fragment.append(quote);
+        continue;
+      }
+
+      const ordered = line.match(/^\d+\.\s+(.+)$/);
+      const unordered = line.match(/^[-*+]\s+(.+)$/);
+      if (ordered || unordered) {
+        const list = document.createElement(ordered ? "ol" : "ul");
+        const pattern = ordered ? /^\d+\.\s+(.+)$/ : /^[-*+]\s+(.+)$/;
+        while (index < lines.length) {
+          const item = lines[index].match(pattern);
+          if (!item) break;
+          const itemLines = [item[1]];
+          index += 1;
+          while (index < lines.length && /^\s{2,}/.test(lines[index])) itemLines.push(lines[index++].trim());
+          const listItem = document.createElement("li");
+          appendMarkdownLines(listItem, itemLines);
+          list.append(listItem);
+        }
+        fragment.append(list);
+        continue;
+      }
+
+      const paragraphLines = [];
+      while (index < lines.length && lines[index].trim() && !isBlockStart(lines[index])) paragraphLines.push(lines[index++]);
+      const paragraph = document.createElement("p");
+      appendMarkdownLines(paragraph, paragraphLines);
+      fragment.append(paragraph);
+    }
+    return fragment;
+  }
+
   try {
     const response = await fetch("/content/writings.json", { cache: "no-store" });
     if (!response.ok) return;
@@ -76,11 +200,7 @@ h1 { max-width: 720px; margin: 12px 0 0; font-family: "DM Sans", sans-serif; fon
         read.textContent = "read note →";
         const body = document.createElement("div");
         body.className = "entry-body";
-        String(entry.body).split(/\n{2,}/).filter(Boolean).forEach((paragraph) => {
-          const p = document.createElement("p");
-          p.textContent = paragraph;
-          body.appendChild(p);
-        });
+        body.append(renderMarkdown(entry.body));
         details.append(read, body);
         article.appendChild(details);
       }

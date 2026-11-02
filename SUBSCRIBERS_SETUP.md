@@ -14,4 +14,4 @@ This repository contains the website code and the Google Apps Script that owns t
    - `APPS_SCRIPT_URL`: the same deployment URL.
    - `SUBSCRIBER_WEBHOOK_SECRET`: the exact secret from step 4.
 
-The Sheet is created with a `Subscribers` tab on the first sign-up. Every new subscriber receives a welcome email. Any CMS publish that changes gallery or writing content triggers the GitHub workflow and emails all active subscribers.
+The Sheet is created with a `Subscribers` tab on the first sign-up. Every new subscriber receives a welcome email. Publishing a new gallery or writing entry emails all active subscribers; edits to existing entries are deployed silently.
