@@ -19,6 +19,7 @@
 <header class="topbar"><a href="/">AYUSH / NOTES</a><nav><a href="/">home</a><a href="/writings.html">writings</a><a href="https://mail.google.com/mail/?view=cm&fs=1&to=ayushyadavprv%40gmail.com">mail</a></nav></header>
 <section class="intro"><div class="kicker">photo gallery</div><h1>gallery</h1></section>
 <section class="gallery-grid" id="gallery" aria-live="polite">
+  <a href="/gallery/2026/not-so-solo-after-all.html" class="photo-card"><img src="https://u.cubeupload.com/ayushyadavprv/IMG20261025112151172.jpg" alt="Udaipur solo trip"><h2 class="post-title">not so solo after all</h2><div class="post-tags">rajasthan · udaipur · solotrip · strangers</div></a>
   <a href="/gallery/2026/and-then-the-taj.html" class="photo-card"><img src="https://u.cubeupload.com/ayushyadavprv/IMG20260822110552694.jpg" alt="The Taj Mahal"><h2 class="post-title">and then, the TAJ</h2></a>
   <a href="/gallery/2026/before-delhi-woke.html" class="photo-card"><img src="https://u.cubeupload.com/ayushyadavprv/2.jpg" alt="Delhi"><h2 class="post-title">before delhi woke</h2></a>
   <a href="/gallery/2026/i-walked-into-the-new-year.html" class="photo-card"><img src="https://u.cubeupload.com/ayushyadavprv/IMG20251223132546817.jpg" alt="A New Year trek"><h2 class="post-title">i walked into the new year</h2></a>
@@ -33,18 +34,20 @@
     const data = await response.json();
     const entries = Array.isArray(data.entries) ? data.entries : [];
     if (!entries.length) return;
-    const items = entries.sort((a,b) => new Date(b.date||0)-new Date(a.date||0)).flatMap(post =>
-      (Array.isArray(post.photos) ? post.photos : []).map(photo => ({ post, photo }))
-    );
-    if (!items.length) return;
+    const existing = new Set([...gallery.querySelectorAll("a.photo-card")].map(a => a.getAttribute("href")));
+    const sorted = entries.slice().sort((a,b) => new Date(b.date||0)-new Date(a.date||0));
     const fragment = document.createDocumentFragment();
-    items.forEach(({post, photo}) => {
+    sorted.forEach(post => {
+      const cover = Array.isArray(post.photos) && post.photos[0];
+      if (!cover) return;
       const year = String(post.date || new Date().getFullYear()).slice(0, 4);
       const slug = String(post.slug || post.title || "untitled").toLowerCase().trim()
         .replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "") || "untitled";
-      const link = document.createElement("a"); link.className = "photo-card";
-      link.href = `/gallery/${year}/${slug}.html`;
-      const image = document.createElement("img"); image.src = photo.image; image.alt = photo.alt || post.title || "Gallery photo";
+      const href = `/gallery/${year}/${slug}.html`;
+      if (existing.has(href)) return;
+      existing.add(href);
+      const link = document.createElement("a"); link.className = "photo-card"; link.href = href;
+      const image = document.createElement("img"); image.src = cover.image; image.alt = cover.alt || post.title || "Gallery photo";
       const title = document.createElement("h2"); title.className = "post-title"; title.textContent = post.title || "untitled";
       const tags = document.createElement("div"); tags.className = "post-tags"; tags.textContent = (post.tags || []).join(" · ");
       link.append(image, title, tags); fragment.appendChild(link);
